@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Study Buddy</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="theme-light">
+  <!-- Top Bar -->
+  <header class="topbar glass">
+    <button id="sidebarToggle" class="icon-btn only-mobile" aria-label="Toggle sidebar">☰</button>
+
+    <div class="brand">
+      <div class="logo">SB</div>
+      <div class="title-wrap">
+        <h1>AI Study Buddy</h1>
+        <p class="muted">Your all-in-one coursework partner</p>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <button id="themeToggle" class="icon-btn" aria-label="Toggle theme" title="Toggle theme">🌓</button>
+      <button id="voiceBtn" class="icon-btn" aria-label="Voice input" title="Voice input">🎤</button>
+      <button id="openStats" class="icon-btn" aria-label="Progress" title="Progress">📊</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar glass" id="sidebar">
+      <nav class="nav">
+        <button class="nav-btn active" data-target="flashcards"><span>🃏</span> Flashcards</button>
+        <button class="nav-btn" data-target="quiz"><span>❓</span> Quiz</button>
+        <button class="nav-btn" data-target="notes"><span>📝</span> Notes</button>
+        <button class="nav-btn" data-target="planner"><span>🗓️</span> Planner</button>
+        <button class="nav-btn" data-target="codelab"><span>💻</span> Code Lab</button>
+      </nav>
+
+      <div class="profile glass-2">
+        <div class="avatar">🤖</div>
+        <div>
+          <div class="profile-name">Gemini Tutor</div>
+          <div class="muted">Always-on helper</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main panels -->
+    <main class="content">
+      <!-- Flashcards -->
+      <section id="flashcards" class="panel glass active fade-in">
+        <div class="panel-header">
+          <h2>Flashcards</h2>
+          <div class="muted">Create & review quick facts</div>
+        </div>
+        <div id="flashcard-container" class="grid"></div>
+        <div class="row">
+          <input id="flash-question" placeholder="Question" />
+          <input id="flash-answer" placeholder="Answer" />
+          <button class="btn" id="addFlashBtn">Add</button>
+        </div>
+      </section>
+
+      <!-- Quiz -->
+      <section id="quiz" class="panel glass fade-in">
+        <div class="panel-header">
+          <h2>Quiz Builder</h2>
+          <div class="muted">Add Q&A; convert to practice mode</div>
+        </div>
+        <div id="quiz-container" class="stack"></div>
+        <div class="row">
+          <input id="quiz-question" placeholder="Enter a question" />
+          <input id="quiz-answer" placeholder="Enter the answer" />
+          <button class="btn" id="addQuizBtn">Add</button>
+        </div>
+      </section>
+
+      <!-- Notes -->
+      <section id="notes" class="panel glass fade-in">
+        <div class="panel-header">
+          <h2>Notes</h2>
+          <div class="muted">Autosaves while you type</div>
+        </div>
+        <textarea id="notes-text" placeholder="Write your notes here..."></textarea>
+      </section>
+
+      <!-- Planner -->
+      <section id="planner" class="panel glass fade-in">
+        <div class="panel-header">
+          <h2>Study Planner</h2>
+          <div class="muted">Tasks with one-click complete</div>
+        </div>
+        <div class="row">
+          <input id="task-input" placeholder="Add a task" />
+          <button class="btn" id="addTaskBtn">Add</button>
+        </div>
+        <ul id="task-list" class="tasks"></ul>
+      </section>
+
+      <!-- Code Lab -->
+      <section id="codelab" class="panel glass fade-in">
+        <div class="panel-header">
+          <h2>Code Lab</h2>
+          <div class="muted">Live HTML/CSS/JS preview</div>
+        </div>
+        <textarea id="code-editor" class="code" placeholder="Type HTML/CSS/JS and click Run"></textarea>
+        <div class="row right">
+          <button class="btn" id="runBtn">Run ▶</button>
+        </div>
+        <iframe id="output-frame" class="preview"></iframe>
+      </section>
+    </main>
+  </div>
+
+  <!-- Chat FAB -->
+  <button id="chat-toggle" class="chat-fab" title="Chat with AI" aria-label="Chat with AI">💬</button>
+
+  <!-- Chat Widget -->
+  <div id="chat-widget" class="chat glass" aria-live="polite" aria-label="AI chat">
+    <div class="chat-header">
+      <div class="avatar small">🤖</div>
+      <div>
+        <div class="chat-title">Gemini Tutor</div>
+        <div class="muted">Light Purple • Glass UI</div>
+      </div>
+      <button class="icon-btn" id="closeChat" title="Close">✖</button>
+    </div>
+
+    <div id="chat-body" class="chat-body"></div>
+
+    <div class="typing hidden" id="typing" aria-hidden="true">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    </div>
+
+    <div class="chat-input">
+      <input id="chat-msg" placeholder="Ask anything... (Shift+Enter = newline)" />
+      <button class="btn" id="sendBtn">Send</button>
+    </div>
+  </div>
+
+  <!-- Stats Modal -->
+  <div id="statsModal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Progress Overview">
+    <div class="modal-card glass">
+      <div class="modal-header">
+        <h3>Progress Overview</h3>
+        <button class="icon-btn" id="closeStats" aria-label="Close">✖</button>
+      </div>
+      <div class="stats">
+        <div class="stat glass-2"><div class="stat-num" id="stat-cards">0</div><div class="muted">Flashcards</div></div>
+        <div class="stat glass-2"><div class="stat-num" id="stat-quiz">0</div><div class="muted">Quiz Qs</div></div>
+        <div class="stat glass-2"><div class="stat-num" id="stat-tasks">0</div><div class="muted">Tasks</div></div>
+        <div class="stat glass-2"><div class="stat-num" id="stat-notes">0</div><div class="muted">Notes chars</div></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer muted">Made with 💜 for students</footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
